@@ -1,3 +1,5 @@
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -78,6 +80,8 @@ public class SecuritySystem {
             @Override
             public void run() {
                 System.out.println("The test is ready to Run..!!");
+                System.out.println(new Timestamp(new Date().getTime()));
+
                 timer.cancel();
             }
         }, 0);
@@ -89,6 +93,8 @@ public class SecuritySystem {
             @Override
             public void run() {
                 secSystem2.setDoorOpen(true);
+                System.out.println(new Timestamp(new Date().getTime()));
+
                 timer1.cancel();
             }
         }, 2000);
@@ -100,6 +106,8 @@ public class SecuritySystem {
             @Override
             public void run() {
                 secSystem2.setDoorOpen(false);
+                System.out.println(new Timestamp(new Date().getTime()));
+
                 timer2.cancel();
             }
         }, 3000);
@@ -112,6 +120,8 @@ public class SecuritySystem {
             @Override
             public void run() {
                 System.out.println("The test is Finished..!!");
+                System.out.println(new Timestamp(new Date().getTime()));
+
                 timer3.cancel();
             }
         }, 4000);
