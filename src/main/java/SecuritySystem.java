@@ -1,3 +1,6 @@
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by kiran on 1/31/16.
  */
@@ -31,6 +34,8 @@ public class SecuritySystem {
 
     public void setDoorOpen(boolean doorOpen) {
         isDoorOpen = doorOpen;
+
+        System.out.println("The Door is "+(isDoorOpen ? "Open":"Closed"));
     }
 
     public boolean isArmed() {
@@ -59,48 +64,59 @@ public class SecuritySystem {
 
     public static void main(String[] args) {
 
-        //First Security System Object with Empty Constructor
-        SecuritySystem secSystem = new SecuritySystem();
-
-        //arming the System
-        secSystem.armSystem();
-        System.out.println("Security System1 is Armed..!!");
-
-        //Printing the State of the System
-        System.out.println("The State of the Security System1 is " + (secSystem.isArmed() ? "Armed":"Not Armed"));
-
-        //disarming the System
-        secSystem.disarmSystem();
-        System.out.println("Security System1 is Disarmed..!!");
-
-        //Printing the State of the System
-        System.out.println("The State of the Security System1 is " + (secSystem.isArmed() ? "Armed":"Not Armed"));
 
         //Second Security System Object with armed=true Constructor
-        SecuritySystem secSystem2 = new SecuritySystem(true);
+        final SecuritySystem secSystem2 = new SecuritySystem(true);
 
         //Printing the State of the System
         System.out.println("The State of the Security System2 is " + (secSystem2.isArmed() ? "Armed":"Not Armed"));
 
-        //Setting the Duration of System turned on to 0.5 days
-        secSystem2.setOnDuration((float)0.5);
+        //Timer One will print the test is ready at 1st second
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
 
-        //Printing the how Long the system is turned on
-        System.out.println("The System2 is turned on from "+secSystem2.getOnDuration()+" days");
+            @Override
+            public void run() {
+                System.out.println("The test is ready to Run..!!");
+                timer.cancel();
+            }
+        }, 0);
+
+        //Timer two will open the door
+        final Timer timer1 = new Timer();
+        timer1.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                secSystem2.setDoorOpen(true);
+                timer1.cancel();
+            }
+        }, 2000);
+
+        //Timer three will close the door
+        final Timer timer2 = new Timer();
+        timer2.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                secSystem2.setDoorOpen(false);
+                timer2.cancel();
+            }
+        }, 3000);
 
 
-        //Thrid Security System Object with all parameters(doorOpen=true, armed=true, onDuration=0.2days)
-        // passed to Constructor
-        SecuritySystem secSystem3 = new SecuritySystem(true, true, (float)0.2);
+        //Timer four will complete the test
+        final Timer timer3 = new Timer();
+        timer3.schedule(new TimerTask() {
 
-        //Printing the State of the System
-        System.out.println("The State of the Security System3 is " + (secSystem3.isArmed() ? "Armed":"Not Armed"));
+            @Override
+            public void run() {
+                System.out.println("The test is Finished..!!");
+                timer3.cancel();
+            }
+        }, 4000);
 
-        //Printing the Current Status of The Door
-        System.out.println("The Current Status of the Door is " + (secSystem3.isDoorOpen() ? "Open":"Closed"));
 
-        //Printing the how Long the system is turned on
-        System.out.println("The System3 is turned on from "+secSystem3.getOnDuration()+" days");
 
     }
 }
